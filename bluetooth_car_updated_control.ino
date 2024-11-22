@@ -21,10 +21,76 @@ unsigned long interval = 500;
 
 bool is_run = false;
 
-float velocity = 10;
+float velocity_min = 100;
 
 //Create a new software  serial
 SoftwareSerial bluetooth(1, 0); //TX, RX (Bluetooth)
+
+void move_forward(){
+    digitalWrite(motorA1, HIGH);
+    digitalWrite(motorA2, LOW);
+               
+    digitalWrite(motorB1, HIGH);
+    digitalWrite(motorB2, LOW);
+}
+
+void move_forward_left(int min){
+    analogWrite(motorA1, min);
+    digitalWrite(motorA2, LOW);
+     
+    digitalWrite(motorB1, HIGH);
+    digitalWrite(motorB2, LOW);
+} 
+
+void move_forward_right(int min){
+    digitalWrite(motorA1, HIGH);
+    digitalWrite(motorA2, LOW);
+
+    analogWrite(motorB1, min);
+    digitalWrite(motorB2, LOW);
+}
+
+void move_backward(){
+    digitalWrite(motorA1, LOW);
+    digitalWrite(motorA2, HIGH);
+                
+    digitalWrite(motorB1, LOW);
+    digitalWrite(motorB2, HIGH);
+}
+
+void move_backward_left(int min){
+    digitalWrite(motorA1, LOW);
+    analogWrite(motorA2, min);
+     
+    digitalWrite(motorB1, LOW);
+    digitalWrite(motorB2, HIGH);
+}
+
+void move_backward_right(int min){
+    digitalWrite(motorA1, LOW);
+    digitalWrite(motorA2, HIGH);
+
+    digitalWrite(motorB1, LOW);
+    analogWrite(motorB2, min);   
+}
+
+void move_left(){
+    digitalWrite(motorA1, LOW);
+    digitalWrite(motorA2, LOW);
+     
+    digitalWrite(motorB1, HIGH);
+    digitalWrite(motorB2, LOW);
+}
+
+void move_right(){
+    digitalWrite(motorA1, HIGH);
+    digitalWrite(motorA2, LOW);
+
+    digitalWrite(motorB1, LOW);
+    digitalWrite(motorB2, LOW);
+}
+
+
 
 void setup(){
     pinMode(motorA1, OUTPUT);
@@ -55,72 +121,37 @@ void loop(){
     char val = bluetooth.read();
 
     if(val == FORWARD){
-      digitalWrite(motorA1, HIGH);
-      digitalWrite(motorA2, LOW);
-               
-      digitalWrite(motorB1, HIGH);
-      digitalWrite(motorB2, LOW);
-
+      move_forward();
       is_run = true;
+        
     }else if(val == BACKWARD){
-      digitalWrite(motorA1, LOW);
-      digitalWrite(motorA2, HIGH);
-                
-      digitalWrite(motorB1, LOW);
-      digitalWrite(motorB2, HIGH);
-
+      move_backward();
       is_run = true;
+        
     }else if(val == RIGHT){
-      digitalWrite(motorA1, HIGH);
-      digitalWrite(motorA2, LOW);
-
-      digitalWrite(motorB1, LOW);
-      digitalWrite(motorB2, LOW);
-         
-
+      move_right();
       is_run = true;
+        
     }else if(val == FORWARD_RIGHT){
-      digitalWrite(motorA1, HIGH);
-      digitalWrite(motorA2, LOW);
-
-      analogWrite(motorB1, 100);
-      digitalWrite(motorB2, LOW);
-         
-
+      move_forward_right(velocity_min);
       is_run = true;
+        
     }else if(val == BACKWARD_RIGHT){
-      digitalWrite(motorA1, LOW);
-      digitalWrite(motorA2, HIGH);
-
-      digitalWrite(motorB1, LOW);
-      analogWrite(motorB2, 100);
-         
-
+      move_backward_right(velocity_min);
       is_run = true;
+        
     }else if(val == LEFT){
-      digitalWrite(motorA1, LOW);
-      digitalWrite(motorA2, LOW);
-     
-      digitalWrite(motorB1, HIGH);
-      digitalWrite(motorB2, LOW);
-
+      move_left();
       is_run = true;
+        
     }else if(val == FORWARD_LEFT){
-      analogWrite(motorA1, 100);
-      digitalWrite(motorA2, LOW);
-     
-      digitalWrite(motorB1, HIGH);
-      digitalWrite(motorB2, LOW);
-
+      move_forward_left(velocity_min);
       is_run = true;
+        
     }else if(val == BACKWARD_LEFT){
-      digitalWrite(motorA1, LOW);
-      analogWrite(motorA2, 100);
-     
-      digitalWrite(motorB1, LOW);
-      digitalWrite(motorB2, HIGH);
-
+      move_backward_left(velocity_min);
       is_run = true;
+        
     }
   }
 
