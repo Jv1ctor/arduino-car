@@ -90,7 +90,13 @@ void move_right(){
     digitalWrite(motorB2, LOW);
 }
 
-
+void stop(){
+    digitalWrite(motorA1, LOW);  
+    digitalWrite(motorA2, LOW);
+                
+    digitalWrite(motorB1, LOW);
+    digitalWrite(motorB2, LOW); 
+}
 
 void setup(){
     pinMode(motorA1, OUTPUT);
@@ -109,12 +115,7 @@ void loop(){
       is_run = false;
       after_time = current_time;
       
-      digitalWrite(motorA1, LOW);  
-      digitalWrite(motorA2, LOW);
-                
-      digitalWrite(motorB1, LOW);
-      digitalWrite(motorB2, LOW); 
-
+      stop(); 
   }
 
   if (bluetooth.available() > 0) {
